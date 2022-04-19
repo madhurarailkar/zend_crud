@@ -1,0 +1,43 @@
+<div class="jumbotron">
+    <h1>Welcome to <span class="zf-green">Zend Framework</span></h1>
+
+</div>
+<div class="row">
+    <a href="<?php echo $this->basePath('/post/add') ?> " class="btn btn-primary">CREATE</a>
+</div>
+<div class="row">
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Title</th>
+      <th scope="col">Description</th>
+      <th scope="col">Category</th>
+      <th scope="col">Action</th>
+
+    </tr>
+  </thead>
+  <tbody>
+      <?php if(count($posts)>0):?>
+          <?php foreach($posts as $post):?>
+        <tr>
+            <th><?php echo $post->getId();?></th>
+            <td><?php echo $post->getTitle();?></td>
+            <td><?php echo $post->getDescription();?></td>
+            <td><?php echo $post->getCategory();?></td>
+            <td><a href="<?php echo $this->url('post',['action'=>'view','id'=>$post->getId()]) ?>" class="btn btn-primary">VIEW</a></td>
+            <td><a href="<?php echo $this->url('post',['action'=>'edit','id'=>$post->getId()]) ?>" class="btn btn-success">UPDATE</a></td>
+            <td><a href="<?php echo $this->url('post',['action'=>'delete','id'=>$post->getId()]) ?>" class="btn btn-danger">DELETE</a></td>
+
+        </tr>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <tr>
+                 <td>No Records Found! </td>
+            </tr>
+        <?php endif; ?>
+    
+  </tbody>
+</table>
+</div>
+

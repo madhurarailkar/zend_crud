@@ -1,0 +1,34 @@
+<?php
+    $title='EDIT POST!!';
+    $this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title);?></h1>
+<?php
+$form->setAttribute('action',$this->url('post',['action'=>'add'])); 
+$form->prepare();
+?>
+<?php
+    echo $this->form()->openTag($form);
+    echo $this->formHidden($form->get('id'));
+    
+?>
+
+<?php
+    echo $this->formRow($form->get('title'));
+    
+?>
+
+<?php
+    echo $this->formRow($form->get('description'));
+    
+?>
+
+<?php
+    echo $this->formRow($form->get('category'));
+    
+?>
+
+<?php
+    echo $this->formSubmit($form->get('submit'));
+    
+?>

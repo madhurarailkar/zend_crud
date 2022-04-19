@@ -1,0 +1,19 @@
+<?php
+    $title="Delete POST!!";
+    $this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title);?></h1>
+
+<?php
+
+$url=$this->url('post',['action'=>'delete','id'=>$id]);
+?>
+<form action="<?php echo $url;?>" method="POST">
+    <p> Are you sure </p>
+    <div class="form-group">
+            <input type="hidden" name="id" value="<?php echo $post->getId(); ?>" >
+            <input type="submit" name="delete" value="Yes" class="btn btn-danger">
+            <input type="submit" name="delete" value="No" class="btn btn-primary">
+    </div>
+</form>
+
