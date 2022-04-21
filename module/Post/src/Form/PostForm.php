@@ -28,6 +28,7 @@ class PostForm  extends Form{
                 'label'=>'Description'
             ]
         ]);
+
         $this->add([
             'name'=>'category',
             'type'=>'text',
@@ -35,6 +36,7 @@ class PostForm  extends Form{
                 'label'=>'Category'
             ]
         ]);
+        
         $this->add([
             'name'=>'submit',
             'type'=>'submit',

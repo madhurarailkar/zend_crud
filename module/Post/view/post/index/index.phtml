@@ -18,8 +18,8 @@
     </tr>
   </thead>
   <tbody>
-      <?php if(count($posts)>0):?>
-          <?php foreach($posts as $post):?>
+      <?php if(count($this->paginator)>0):?>
+          <?php foreach($this->paginator as $post):?>
         <tr>
             <th><?php echo $post->getId();?></th>
             <td><?php echo $post->getTitle();?></td>
@@ -39,5 +39,15 @@
     
   </tbody>
 </table>
+<?= $this->paginationControl(
+    // The paginator object:
+    $this->paginator,
+    // The scrolling style:
+    'sliding',
+    // The partial to use to render the control:
+    'partial/paginator',
+    // The route to link to when a user clicks a control link:
+    ['route' => 'post']
+) ?>
 </div>
 

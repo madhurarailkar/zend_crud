@@ -19,9 +19,32 @@ class IndexController extends AbstractActionController
     }
     public function indexAction()
     {   
-        $posts=$this->table->fetchAll();
+            // Grab the paginator from the AlbumTable:
+        $paginator = $this->table->fetchAll(true);
+
+        // Set the current page to what has been passed in query string,
+        // or to 1 if none is set, or the page is invalid:
+        $page = (int) $this->params()->fromQuery('page', 1);
+        $page = ($page < 1) ? 1 : $page;
+        $paginator->setCurrentPageNumber($page);
+
+        // Set the number of items per page to 10:
+        $paginator->setItemCountPerPage(2);
+
+        return new ViewModel(['paginator' => $paginator]);
+    //     // $posts=$this->table->fetchAll();
         
-        return new ViewModel(['posts'=>$posts]);
+    //     // return new ViewModel(['posts'=>$posts]);
+    //          // grab the paginator from the AlbumTable
+    //  $posts = $this->table->fetchAll(true);
+    //  // set the current page to what has been passed in query string, or to 1 if none set
+    //  $posts->setCurrentPageNumber((int) $this->params()->fromQuery('page', 1));
+    //  // set the number of items per page to 10
+    //  $posts->setItemCountPerPage(2);
+
+    //  return new ViewModel(array(
+    //      'posts' => $posts
+    //  ));
     }
     public function addAction()
     {
@@ -30,17 +53,17 @@ class IndexController extends AbstractActionController
         if(!$request->isPost()){
             return new ViewModel(['form'=>$form]);
         }
-            $post=new \Post\Model\Post();
-            $form->setData($request->getPost());
-            if(!$form->isValid()){
-                exit('id is not correct');
-            }
-            $post->exchangeArray($form->getData());
-            $this->table->saveData($post);
-            return $this->redirect()->toRoute('home',[
-                'controller' => 'home',
-                'action' => 'add'
-            ]);
+        $post=new \Post\Model\Post();
+        $form->setData($request->getPost());
+        if(!$form->isValid()){
+               exit('id is not correct');
+        }
+        $post->exchangeArray($form->getData());
+        $this->table->saveData($post);
+        return $this->redirect()->toRoute('home',[
+            'controller' => 'home',
+            'action' => 'add'
+        ]);
     }
     public function viewAction()
     {
