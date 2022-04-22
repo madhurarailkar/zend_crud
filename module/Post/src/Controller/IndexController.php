@@ -9,6 +9,8 @@ namespace Post\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Zend\Session\SessionManager;
+use Zend\Session\Container;
 
 class IndexController extends AbstractActionController
 {
@@ -19,32 +21,43 @@ class IndexController extends AbstractActionController
     }
     public function indexAction()
     {   
-            // Grab the paginator from the AlbumTable:
-        $paginator = $this->table->fetchAll(true);
+        //     // Grab the paginator from the AlbumTable:
 
-        // Set the current page to what has been passed in query string,
-        // or to 1 if none is set, or the page is invalid:
-        $page = (int) $this->params()->fromQuery('page', 1);
-        $page = ($page < 1) ? 1 : $page;
-        $paginator->setCurrentPageNumber($page);
+        // // Set the current page to what has been passed in query string,
+        // // or to 1 if none is set, or the page is invalid:
+        // $page = (int) $this->params()->fromQuery('page', 1);
+        // $page = ($page < 1) ? 1 : $page;
+        // $paginator->setCurrentPageNumber($page);
 
-        // Set the number of items per page to 10:
-        $paginator->setItemCountPerPage(2);
+        // // Set the number of items per page to 10:
+        // $paginator->setItemCountPerPage(2);
 
-        return new ViewModel(['paginator' => $paginator]);
-    //     // $posts=$this->table->fetchAll();
-        
-    //     // return new ViewModel(['posts'=>$posts]);
-    //          // grab the paginator from the AlbumTable
-    //  $posts = $this->table->fetchAll(true);
-    //  // set the current page to what has been passed in query string, or to 1 if none set
-    //  $posts->setCurrentPageNumber((int) $this->params()->fromQuery('page', 1));
-    //  // set the number of items per page to 10
-    //  $posts->setItemCountPerPage(2);
+        // return new ViewModel(['paginator' => $paginator]);
 
-    //  return new ViewModel(array(
-    //      'posts' => $posts
-    //  ));
+         
+         // Getting search keyword if any
+         $searchKeyword = (string) $this->params()->fromQuery('search_keyword', false);
+        //  $search = new Container('PSearch');
+
+        //     if($searchKeyword != null){
+        //         $search->psearch = $searchKeyword;
+        //     }else{
+        //     $searchKeyword = $search->psearch;
+        //     }
+         $paginator = $this->table->fetchAll(true,$searchKeyword);
+
+         $page = (int) $this->params()->fromQuery('page', 1);
+         $page = ($page < 1) ? 1 : $page;
+         $paginator->setCurrentPageNumber($page);
+ 
+         // Set the number of items per page to 10:
+         $paginator->setItemCountPerPage(2);
+ 
+         return new ViewModel([
+             'paginator' => $paginator,
+             'searchKeyword' => $searchKeyword,
+         ]);       
+     
     }
     public function addAction()
     {
@@ -148,5 +161,11 @@ class IndexController extends AbstractActionController
         {
             return $this->redirect()->toRoute('home');
         }
+    }
+    public function sort()
+    {
+        $viewModel = new ViewModel();
+        $viewModel->setTemplate('post/index/add');
+        return $viewModel;    
     }
 }

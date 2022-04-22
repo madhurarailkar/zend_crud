@@ -5,11 +5,24 @@
 <div class="row">
     <a href="<?php echo $this->basePath('/post/add') ?> " class="btn btn-primary">CREATE</a>
 </div>
+<div class="col-sm-6 pull-right">
+        <h4>Make a search by title</h4>
+        <form method="get">
+            <div class="input-group pull-right">
+            <input name="search_keyword" type="text" class="form-control" placeholder="Search..." value="<?= $this->searchKeyword ?>">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit">Search
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                </span>
+            </div>
+        </form>
+</div>
 <div class="row">
 <table class="table table-hover">
   <thead>
     <tr>
-      <th scope="col">ID</th>
+      <th scope="col" ><a href="<?php echo $this->url('post',['action'=>'sort','column'=>'id']) ?>" class="sort">ID</a></th>
       <th scope="col">Title</th>
       <th scope="col">Description</th>
       <th scope="col">Category</th>
@@ -46,8 +59,11 @@
     'sliding',
     // The partial to use to render the control:
     'partial/paginator',
+    ['searchKeyword' => $this->searchKeyword],
+
     // The route to link to when a user clicks a control link:
-    ['route' => 'post']
+    ['route' => 'post'],
+
 ) ?>
 </div>
 

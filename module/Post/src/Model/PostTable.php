@@ -15,19 +15,26 @@ class PostTable
     {
         $this->tableGateway=$tableGateway;
     }
-    public function fetchAll($paginated = false)
+    public function fetchAll($paginated = false,$keyword = null)
     {
         if ($paginated) {
-            return $this->fetchPaginatedResults();
+            return $this->fetchPaginatedResults($keyword);
         }
 
         return $this->tableGateway->select();
     }
-    private function fetchPaginatedResults()
+    private function fetchPaginatedResults($keyword)
     {
         // Create a new Select object for the table:
         $select = new Select($this->tableGateway->getTable());
-
+        
+        if (!is_null($keyword)) {
+            $select->Where->like('title', '%'.$keyword.'%')
+                ->orWhere->like('description', '%'.$keyword.'%')
+                ->orWhere->like('category', '%'.$keyword.'%');
+        }
+        
+        $rowset = $this->tableGateway->selectWith($select);
         // Create a new result set based on the Album entity:
         $resultSetPrototype = new ResultSet();
         $resultSetPrototype->setArrayObjectPrototype(new Post());

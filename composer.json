@@ -17,7 +17,8 @@
         "zendframework/zend-db": "^2.11",
         "zendframework/zend-form": "^2.14",
         "zendframework/zend-i18n": "^2.10",
-        "zendframework/zend-paginator": "^2.8"
+        "zendframework/zend-paginator": "^2.8",
+        "zendframework/zend-session": "^2.9"
     },
     "autoload": {
         "psr-4": {
