@@ -29,11 +29,15 @@ class PostTable
         $select = new Select($this->tableGateway->getTable());
         
         if (!is_null($keyword)) {
-            $select->Where->like('title', '%'.$keyword.'%')
-                ->orWhere->like('description', '%'.$keyword.'%')
-                ->orWhere->like('category', '%'.$keyword.'%');
+            // $select->Where->like('title', '%'.$keyword.'%')
+            //     ->orWhere->like('description', '%'.$keyword.'%')
+            //     ->orWhere->like('category', '%'.$keyword.'%');
+            $select->where('title LIKE "%'.$keyword.'%" OR description LIKE "%'.$keyword.'%" OR category LIKE "%'.$keyword.'%"');
+            // $select->where('title LIKE ? OR description LIKE ?', array('%'.$keyword.'%', '%'.$keyword.'%'));
+
         }
-        
+        echo $this->tableGateway->getSql()->getSqlstringForSqlObject($select);
+
         $rowset = $this->tableGateway->selectWith($select);
         // Create a new result set based on the Album entity:
         $resultSetPrototype = new ResultSet();
