@@ -4,28 +4,37 @@
 </div>
 <div class="row">
     <a href="<?php echo $this->basePath('/post/add') ?> " class="btn btn-primary">CREATE</a>
-</div>
-<div class="col-sm-6 pull-right">
-        <h4>Make a search by title</h4>
+    <!-- <div class="input-group col-sm-6 pull-right">
+        <input type="text" name="search_keyword" value="<?= $this->searchKeyword ?>" class="form-control rounded" placeholder="Search" aria-label="Search..." aria-describedby="search-addon" />
+        <button type="button" class="btn btn-outline-primary" type="submit">search</button>
+    </div> -->
+<!-- </div> -->
+
+<div class="col-sm-6 pull-right ">
         <form method="get">
             <div class="input-group pull-right">
             <input name="search_keyword" type="text" class="form-control" placeholder="Search..." value="<?= $this->searchKeyword ?>">
                 <span class="input-group-btn">
-                    <button class="btn btn-default" type="submit">Search
+                    <button class="btn btn-outline-primary" type="submit">Search
                         <span class="glyphicon glyphicon-search"></span>
                     </button>
                 </span>
             </div>
         </form>
 </div>
+</div>
 <div class="row">
 <table class="table table-hover">
   <thead>
     <tr>
-      <th scope="col" ><a href="<?php echo $this->url('post',['action'=>'sort','column'=>'id']) ?>" class="sort">ID</a></th>
-      <th scope="col">Title</th>
-      <th scope="col">Description</th>
-      <th scope="col">Category</th>
+        <th scope="col" ><a href="<?php echo $this->url('post',['action'=>'sort','column'=>'id'], ['query' => ['page' =>$this->page,'search_keyword' => $this->searchKeyword,
+            'sort' => 'id','sort_by' => $this->sort_by]]) ?>" class="sort">ID</a></th>
+        <th scope="col" ><a href="<?php echo $this->url('post',['action'=>'sort','column'=>'id'], ['query' => ['page' =>$this->page,'search_keyword' => $this->searchKeyword,
+            'sort' => 'title','sort_by' => $this->sort_by]]) ?>" class="sort">Title</a></th>
+        <th scope="col" ><a href="<?php echo $this->url('post',['action'=>'sort','column'=>'id'], ['query' => ['page' =>$this->page,'search_keyword' => $this->searchKeyword,
+            'sort' => 'description','sort_by' => $this->sort_by]]) ?>" class="sort">Description</a></th>
+        <th scope="col" ><a href="<?php echo $this->url('post',['action'=>'sort','column'=>'id'], ['query' => ['page' =>$this->page,'search_keyword' => $this->searchKeyword,
+            'sort' => 'category','sort_by' => $this->sort_by]]) ?>" class="sort">Category</a></th>
       <th scope="col">Action</th>
 
     </tr>
@@ -59,7 +68,7 @@
     'sliding',
     // The partial to use to render the control:
     'partial/paginator',
-    ['searchKeyword' => $this->searchKeyword],
+    ['page'=>$this->page,'searchKeyword' => $this->searchKeyword,'sort_by' => $this->sort_by,'sort'=>$this->sort],
 
     // The route to link to when a user clicks a control link:
     ['route' => 'post'],

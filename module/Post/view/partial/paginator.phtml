@@ -10,13 +10,17 @@
                 <a href="<?= $this->url($this->route, [], 
                     ['query' => [
                         'page' => $this->first, 
-                        'search_keyword' => $this->searchKeyword
+                        'search_keyword' => $this->searchKeyword,
+                        'sort_by'=>$this->sort_by,
+                        'sort'=>$this->sort
                     ]]); ?>">«</a>
                 <a href="<?= $this->url($this->route, [], 
                     ['query' => [
                         'page' => $this->previous, 
-                        'search_keyword' => $this->searchKeyword
-                    ]]); ?>">‹</a>
+                        'search_keyword' => $this->searchKeyword,
+                        'sort_by'=>$this->sort_by,
+                        'sort'=>$this->sort                    
+                        ]]); ?>">‹</a>
             </li>
         <?php endif; ?>
         
@@ -31,7 +35,9 @@
                     <a href="<?= $this->url($this->route, [], 
                         ['query' => [
                             'page' => $page, 
-                            'search_keyword' => $this->searchKeyword
+                            'search_keyword' => $this->searchKeyword,
+                            'sort_by'=>$this->sort_by,
+                            'sort'=>$this->sort        
                         ]]); ?>">
                         <?= $page; ?>
                     </a>
@@ -49,13 +55,17 @@
                 <a href="<?= $this->url($this->route, [], 
                     ['query' => [
                         'page' => $this->next, 
-                        'search_keyword' => $this->searchKeyword
+                        'search_keyword' => $this->searchKeyword,
+                        'sort_by'=>$this->sort_by,
+                        'sort'=>$this->sort        
                     ]]); ?>">›</a>
                 <a href="<?= $this->url($this->route, [], 
                     ['query' => [
                         'page' => $this->last, 
-                        'search_keyword' => $this->searchKeyword
-                    ]]); ?>">»</a>
+                        'search_keyword' => $this->searchKeyword,
+                        'sort_by'=>$this->sort_by,
+                        'sort'=>$this->sort                            
+                        ]]); ?>">»</a>
             </li>
         <?php endif; ?>
     </ul>

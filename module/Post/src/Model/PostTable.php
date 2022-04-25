@@ -15,28 +15,26 @@ class PostTable
     {
         $this->tableGateway=$tableGateway;
     }
-    public function fetchAll($paginated = false,$keyword = null)
+    public function fetchAll($paginated = false,$keyword = null,$sort_by=null,$sort=null)
     {
         if ($paginated) {
-            return $this->fetchPaginatedResults($keyword);
+            return $this->fetchPaginatedResults($keyword,$sort_by,$sort);
         }
-
         return $this->tableGateway->select();
     }
-    private function fetchPaginatedResults($keyword)
+    private function fetchPaginatedResults($keyword=null,$sort_by=null,$sort=null)
     {
         // Create a new Select object for the table:
         $select = new Select($this->tableGateway->getTable());
         
-        if (!is_null($keyword)) {
-            // $select->Where->like('title', '%'.$keyword.'%')
-            //     ->orWhere->like('description', '%'.$keyword.'%')
-            //     ->orWhere->like('category', '%'.$keyword.'%');
+        if (($keyword)!='') {
             $select->where('title LIKE "%'.$keyword.'%" OR description LIKE "%'.$keyword.'%" OR category LIKE "%'.$keyword.'%"');
-            // $select->where('title LIKE ? OR description LIKE ?', array('%'.$keyword.'%', '%'.$keyword.'%'));
-
         }
-        echo $this->tableGateway->getSql()->getSqlstringForSqlObject($select);
+        if(($sort)!='')
+        {
+            $select->order($sort.' '.$sort_by);
+        }
+        // echo $this->tableGateway->getSql()->getSqlstringForSqlObject($select);
 
         $rowset = $this->tableGateway->selectWith($select);
         // Create a new result set based on the Album entity:
@@ -85,5 +83,38 @@ class PostTable
         $this->tableGateway->delete([
             'id'=>$id
         ]);
+    }
+    public function sortBy($keyword = null,$sort_by=null,$sort=null)
+    {
+        return $this->fetchPaginatedResults($keyword,$sort_by,$sort);
+
+        //  // Create a new Select object for the table:
+        //     $select = new Select($this->tableGateway->getTable());
+        //     if (!is_null($keyword)) {
+        //         $select->where('title LIKE "%'.$keyword.'%" OR description LIKE "%'.$keyword.'%" OR category LIKE "%'.$keyword.'%"');
+        //     }
+        //     if(!is_null($sort))
+        //     {
+        //         $select->order($sort.' '.$sort_by);
+        //     }
+        //     // echo $this->tableGateway->getSql()->getSqlstringForSqlObject($select);exit;
+    
+        //     $rowset = $this->tableGateway->selectWith($select);
+        //     // Create a new result set based on the Album entity:
+        //     $resultSetPrototype = new ResultSet();
+        //     $resultSetPrototype->setArrayObjectPrototype(new Post());
+    
+        //     // Create a new pagination adapter object:
+        //     $paginatorAdapter = new DbSelect(
+        //         // our configured select object:
+        //         $select,
+        //         // the adapter to run it against:
+        //         $this->tableGateway->getAdapter(),
+        //         // the result set to hydrate:
+        //         $resultSetPrototype
+        //     );
+    
+        //     $paginator = new Paginator($paginatorAdapter);
+        //     return $paginator;   
     }
 }

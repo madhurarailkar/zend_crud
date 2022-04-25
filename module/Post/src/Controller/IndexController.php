@@ -21,42 +21,25 @@ class IndexController extends AbstractActionController
     }
     public function indexAction()
     {   
-        //     // Grab the paginator from the AlbumTable:
-
-        // // Set the current page to what has been passed in query string,
-        // // or to 1 if none is set, or the page is invalid:
-        // $page = (int) $this->params()->fromQuery('page', 1);
-        // $page = ($page < 1) ? 1 : $page;
-        // $paginator->setCurrentPageNumber($page);
-
-        // // Set the number of items per page to 10:
-        // $paginator->setItemCountPerPage(2);
-
-        // return new ViewModel(['paginator' => $paginator]);
-
-         
-         // Getting search keyword if any
          $searchKeyword = (string) $this->params()->fromQuery('search_keyword', false);
-        //  $search = new Container('PSearch');
+         $sort_by = (string) $this->params()->fromQuery('sort_by', false);
+         $sort = (string) $this->params()->fromQuery('sort', false);
 
-        //     if($searchKeyword != null){
-        //         $search->psearch = $searchKeyword;
-        //     }else{
-        //     $searchKeyword = $search->psearch;
-        //     }
-         $paginator = $this->table->fetchAll(true,$searchKeyword);
-
-         $page = (int) $this->params()->fromQuery('page', 1);
+         $paginator = $this->table->fetchAll(true,$searchKeyword,$sort_by,$sort);
+         $page = (int) $this->params()->fromQuery('page');
          $page = ($page < 1) ? 1 : $page;
          $paginator->setCurrentPageNumber($page);
- 
-         // Set the number of items per page to 10:
-         $paginator->setItemCountPerPage(2);
- 
+         $paginator->setItemCountPerPage(3);
+         
+         
+
          return new ViewModel([
              'paginator' => $paginator,
              'searchKeyword' => $searchKeyword,
-         ]);       
+             'sort_by'=>$sort_by,
+             'sort'=>$sort,
+             'page'=>$page,
+            ]);       
      
     }
     public function addAction()
@@ -162,10 +145,45 @@ class IndexController extends AbstractActionController
             return $this->redirect()->toRoute('home');
         }
     }
-    public function sort()
+    public function sortAction()
     {
-        $viewModel = new ViewModel();
-        $viewModel->setTemplate('post/index/add');
-        return $viewModel;    
+
+        $searchKeyword = (string) $this->params()->fromQuery('search_keyword', false);
+        $sort_by = (string) $this->params()->fromQuery('sort_by', false);
+        $sort = (string) $this->params()->fromQuery('sort', false);
+        if($sort_by=='')
+        {
+            $sort_by='desc';
+        }
+        else if($sort_by=='asc')
+        {
+            $sort_by='desc';
+        }
+        else if ($sort_by='desc'){
+            $sort_by='asc';
+        }
+        if($sort=='')
+         {
+             $sort='id';
+         }
+        $paginator = $this->table->sortBy($searchKeyword,$sort_by,$sort);
+
+        $page = (int) $this->params()->fromQuery('page');
+        $page = ($page < 1) ? 1 : $page;
+        $paginator->setCurrentPageNumber($page);
+
+        // Set the number of items per page to 10:
+        $paginator->setItemCountPerPage(3);
+        $viewModel = new ViewModel([
+            'paginator' => $paginator,
+            'searchKeyword' => $searchKeyword,
+            'sort_by'=>$sort_by,
+            'sort'=>$sort,
+            'page'=>$page,
+        ]);       
+
+        $viewModel->setTemplate('post/index/index');
+        return $viewModel;  
+        // return getResponse();  
     }
 }
